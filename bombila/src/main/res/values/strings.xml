@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Bombila</string>
+    <string-array name="directions">
+        <item>ПЯТИХАТКИ</item>
+        <item>ЖУКИ</item>
+        <item>ПОБЕДЫ</item>
+        <item>АЛЕКСЕЕВСКАЯ</item>
+        <item>ДЕРЕВЯНКО</item>
+        <item>ПОЛЯ</item>
+        <item>ДИНАМОВСКАЯ</item>
+        <item>КОСМИЧЕСКАЯ</item>
+        <item>ПУШКИНСКАЯ</item>
+        <item>СОВЕТСКАЯ</item>
+        <item>ВОКЗАЛ</item>
+        <item>АВТОВОКЗАЛ</item>
+        <item>МЕТАЛЛИСТ</item>
+        <item>ПОС.АРТЕМА</item>
+        <item>КИЕВСКАЯ</item>
+        <item>ГИДРОПАРК</item>
+        <item>СОРТИРОВКА</item>
+        <item>ЛЫС.ГОРА</item>
+        <item>ЗАЛЮТИНО</item>
+        <item>ХОЛ ГОРА</item>
+        <item>БАВАРИЯ</item>
+        <item>Б.ДАНИЛОВКА</item>
+        <item>С.САЛТ.</item>
+        <item>ВОСТ.САЛТ</item>
+        <item>СТУДНЯК</item>
+        <item>602-й</item>
+        <item>Ц.САЛТОВКА</item>
+        <item>ЮГ САЛТ.</item>
+        <item>ТРК ФРАНЦ.БУЛЬВ.</item>
+        <item>ЯКИРА</item>
+        <item>НЕМЫШЛЯ</item>
+        <item>ЖУКОВА</item>
+        <item>НОВ.ДОМА</item>
+        <item>КОММУН.РЫНОК</item>
+        <item>ХТЗ</item>
+        <item>РОГАНЬ</item>
+        <item>ГОРИЗОНТ</item>
+        <item>ДОКУЧАЕВА</item>
+        <item>АЭРОПОРТ</item>
+        <item>ОДЕССКАЯ</item>
+        <item>ЗЕРНОВАЯ</item>
+        <item>ДИКАНЕВКА</item>
+        <item>МОСКАЛЕВКА</item>
+        <item>НОВОЖАНОВО</item>
+        <item>ЖИХАРЬ</item>
+        <item>ФИЛИППОВКА</item>
+        <item>БЕЗЛЮДОВКА</item>
+        <item>ПЛЯЖ АЛЕКСАНДРА</item>
+        <item>БАБАИ</item>
+        <item>ВЫСОКИЙ</item>
+        <item>ПЕСОЧИН</item>
+        <item>М.ДАНИЛОВКА</item>
+        <item>КУЛИНИЧИ</item>
+        <item>СОЛОНИЦЕВКА</item>
+        <item>ЦИРКУНЫ</item>
+    </string-array>
+</resources>
