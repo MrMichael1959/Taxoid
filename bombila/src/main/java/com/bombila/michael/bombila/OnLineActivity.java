@@ -826,15 +826,14 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
             }
         }
         void deleteOrdersFromBochka() {
-JSONArray arr = new JSONArray();
+            JSONArray arr = new JSONArray();
             try {
                 for (int i=0; i<orders.length(); i++) {
                     JSONObject obj = orders.getJSONObject(i);
-if (!obj.getString("FOT").equals(ftaxi)) continue;
-arr.put(obj);
-//                    if (!obj.getString("FOT").equals(ftaxi)) orders.remove(i);
+                    if (!obj.getString("FOT").equals(ftaxi)) continue;
+                    arr.put(obj);
                 }
-orders = arr;
+                orders = arr;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -842,15 +841,14 @@ orders = arr;
         void deleteOrders() {
             try {
                 for (int i=0; i<deleted_orders.length(); i++) {
-JSONArray arr = new JSONArray();
+                    JSONArray arr = new JSONArray();
                     for (int j=0; j<orders.length(); j++) {
                         JSONObject order = orders.getJSONObject(j);
                         String fid = String.valueOf(order.getString("FID"));
-if (deleted_orders.getString(i).equals(fid)) continue;
-arr.put(order);
-//                        if (deleted_orders.getString(i).equals(fid)) orders.remove(j);
+                        if (deleted_orders.getString(i).equals(fid)) continue;
+                        arr.put(order);
                     }
-orders = arr;
+                    orders = arr;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
