@@ -329,7 +329,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
 //--------------------------------------------------------------------------------------------------
     String getAddress(){
 //--------------------------------------------------------------------------------------------------
-        if(currlatitude==0.0 || currlongitude==0.0) { return null; };
+        if(currlatitude==0.0 || currlongitude==0.0) { return null; }
         Geocoder coder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses;
         String address = null;
