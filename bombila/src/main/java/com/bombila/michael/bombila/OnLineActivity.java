@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 public class OnLineActivity extends AppCompatActivity implements OnClickListener {
@@ -282,6 +283,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 break;
 
             case R.id.btnCancel:
+                btnCancel.setVisibility(View.GONE);
                 clickBtnCancel = true;
                 break;
 
@@ -435,6 +437,12 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                     continue;
                 }
 
+//===> cancel
+                if (response.equals("cancel")) {
+
+                    continue;
+                }
+
 //===> point_a
                 if (response.equals("point_a")) {
                     //if (status.equals("null")) revise();
@@ -442,6 +450,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 }
 
                 if (clickBtnCancel) {
+//                    action("cancel");
                     clickBtnCancel = false;
                 }
                 if (clickBtnOnPlace) {
@@ -520,11 +529,12 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 obj.put("version", version);
 
                 sendToSocket(obj.toString());
-                action_response = getFromSocket();
+                String resp = getFromSocket();
 
-                JSONObject jresp = new JSONObject(action_response);
+                JSONObject jresp = new JSONObject(resp);
                 response = jresp.getString("response");
                 if (jresp.has("status")) status = jresp.getString("status");
+                if (jresp.has("type")) type = jresp.getString("type");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
