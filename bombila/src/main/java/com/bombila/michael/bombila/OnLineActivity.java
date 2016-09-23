@@ -439,7 +439,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
 
 //===> cancel
                 if (response.equals("cancel")) {
-
                     continue;
                 }
 
@@ -450,6 +449,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 }
 
                 if (clickBtnCancel) {
+                    publishProgress("cancel");
 //                    action("cancel");
                     clickBtnCancel = false;
                 }
@@ -500,6 +500,14 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 llOnPlace.setVisibility(View.VISIBLE);
                 tvAssign.setText(String.valueOf(order_id));
             }
+            if(values[0].equals("cancel")) {
+                if (pilot) mp.start();
+                pilot = false;
+                tvPilot.setTextColor(0xffcc0000);
+                llOnLine.setVisibility(View.GONE);
+                llOnPlace.setVisibility(View.VISIBLE);
+                tvAssign.setText(String.valueOf(order_id));
+            }
         }
         @Override
         protected void onPostExecute(Void result) {
@@ -529,9 +537,9 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 obj.put("version", version);
 
                 sendToSocket(obj.toString());
-                String resp = getFromSocket();
+                action_response = getFromSocket();
 
-                JSONObject jresp = new JSONObject(resp);
+                JSONObject jresp = new JSONObject(action_response);
                 response = jresp.getString("response");
                 if (jresp.has("status")) status = jresp.getString("status");
                 if (jresp.has("type")) type = jresp.getString("type");
