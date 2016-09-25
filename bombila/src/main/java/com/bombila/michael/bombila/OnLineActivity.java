@@ -283,7 +283,10 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 break;
 
             case R.id.btnCancel:
-                btnCancel.setVisibility(View.GONE);
+                btnOnPlace.setVisibility(View.VISIBLE);
+                btnOnRoad.setVisibility(View.GONE);
+                llOnLine.setVisibility(View.VISIBLE);
+                llOnPlace.setVisibility(View.GONE);
                 clickBtnCancel = true;
                 break;
 
@@ -294,8 +297,10 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 break;
 
             case R.id.btnOnRoad:
-                btnOnPlace.setVisibility(View.GONE);
+                btnOnPlace.setVisibility(View.VISIBLE);
                 btnOnRoad.setVisibility(View.GONE);
+                llOnLine.setVisibility(View.VISIBLE);
+                llOnPlace.setVisibility(View.GONE);
                 clickBtnOnRoad = true;
                 break;
 
@@ -501,12 +506,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 tvAssign.setText(String.valueOf(order_id));
             }
             if(values[0].equals("cancel")) {
-                if (pilot) mp.start();
-                pilot = false;
-                tvPilot.setTextColor(0xffcc0000);
-                llOnLine.setVisibility(View.GONE);
-                llOnPlace.setVisibility(View.VISIBLE);
-                tvAssign.setText(String.valueOf(order_id));
             }
         }
         @Override

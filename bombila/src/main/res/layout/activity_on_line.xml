@@ -121,7 +121,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Отказаться от заказа"
-            android:id="@+id/btnCancel" />
+            android:id="@+id/btnCancel"
+            android:visibility="gone" />
         <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
