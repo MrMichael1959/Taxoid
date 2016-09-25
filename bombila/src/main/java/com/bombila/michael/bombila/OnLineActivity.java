@@ -358,6 +358,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
         private static final int server_Port = 10000;
 
         String count = "";
+        String phone = "";
         String response = "null";
         String status = "null";
         String type = "null";
@@ -438,12 +439,19 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
 
 //===> state
                 if (response.equals("state")) {
+                    publishProgress("state");
                     action("state");
                     continue;
                 }
 
 //===> cancel
                 if (response.equals("cancel")) {
+                    type = "cancel";
+                    if (status.equals("success")) {
+                        response = "get_orders";
+                        continue;
+                    }
+                    revise();
                     continue;
                 }
 
@@ -497,15 +505,15 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 showOrders();
                 deleteOrdersFromBochka();
             }
-            if(values[0].equals("assign")) {
-                if (pilot) mp.start();
-                pilot = false;
-                tvPilot.setTextColor(0xffcc0000);
-                llOnLine.setVisibility(View.GONE);
-                llOnPlace.setVisibility(View.VISIBLE);
-                tvAssign.setText(String.valueOf(order_id));
-            }
-            if(values[0].equals("cancel")) {
+            if(values[0].equals("state")) {
+                if (pilot) {
+                    mp.start();
+                    pilot = false;
+                    tvPilot.setTextColor(0xffcc0000);
+                    llOnLine.setVisibility(View.GONE);
+                    llOnPlace.setVisibility(View.VISIBLE);
+                }
+                showOrderInfo();
             }
         }
         @Override
@@ -946,6 +954,71 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 }
             });
             sAdapter.notifyDataSetChanged();
+        }
+        void showOrderInfo() {
+            try {
+                String info = "";
+                JSONObject o = new JSONObject(action_response);
+                JSONObject obj = o.getJSONObject("order");
+
+                String fpdate = obj.getString("FPDATE");
+                if (!fpdate.equals("null")) {
+                    long ltime = (Long.parseLong(fpdate) - deltaTime) * 1000;
+                    SimpleDateFormat spf = new SimpleDateFormat("HH:mm");
+                    info = "ПРЕДВАРИТЕЛЬНЫЙ ЗАКАЗ " + "[" + spf.format(new Date(ltime)) + "]\n\n";
+                }
+                String f0 = obj.getString("F0");
+                if (!f0.equals("null")) {
+                    long ltime = (Long.parseLong(f0) - deltaTime) * 1000;
+                    SimpleDateFormat spf = new SimpleDateFormat("HH:mm:ss");
+                    info += "Заказ принят: " + spf.format(new Date(ltime)) + "\n";
+                }
+                String fa = obj.getString("FA");
+                if (!fa.equals("null")) {
+                    long ltime = (Long.parseLong(fa) - deltaTime) * 1000;
+                    SimpleDateFormat spf = new SimpleDateFormat("HH:mm:ss");
+                    info += "На месте: " + spf.format(new Date(ltime)) + "\n";
+                }
+                String address = obj.getString("FAD_STR");
+                if (!obj.getString("FAD_H").equals("null")) address += " " + obj.getString("FAD_H");
+                if (!obj.getString("FAD_PO").equals("null")) address += " " + obj.getString("FAD_PO");
+                info += "Откуда: " + address + "\n";
+
+                String route = "";
+                JSONArray fad_route = obj.getJSONArray("FAD_ROUTE");
+                if (fad_route != null) {
+                    for (int j = 0; j < fad_route.length(); j++) {
+                        route += "=>" + fad_route.getString(j) + " ";
+                    }
+                }
+                info +=  "Куда: " + route + "\n";
+
+                String price = "";
+                if (obj.getJSONObject("FCOST_DATA").has("cost_s")) {
+                    price = obj.getJSONObject("FCOST_DATA").getString("cost_s");
+                    info += "Стоимость: " + price + "\n";
+                }
+                String note = obj.getString("FAD_NOTE");
+                if (!note.equals("null")) {
+                    info += "Примечание: " + note + "\n";
+                }
+                phone = obj.getString("FTEL");
+                if (!phone.equals("null")) {
+                    info += "Телефон: " + phone + "\n";
+                }
+                tvAssign.setText(info);
+
+                int cancel = o.getInt("cancel");
+                if (cancel == 0) {
+                    btnCancel.setVisibility(View.VISIBLE);
+                } else {
+                    btnCancel.setVisibility(View.GONE);
+                }
+//                String poinnt = o.getString("point");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }
