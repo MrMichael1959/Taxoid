@@ -531,8 +531,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
             catch (InterruptedException e) { e.printStackTrace(); }
         }
         void action(String action) {
-            publishProgress(action);
-/*
             JSONObject obj = new JSONObject();
             try {
                 obj.put("action", action);
@@ -553,7 +551,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-*/
         }
         void revise() {
             JSONObject obj = new JSONObject();
