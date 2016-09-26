@@ -462,8 +462,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 }
 
                 if (clickBtnCancel) {
-                    publishProgress("cancel");
-//                    action("cancel");
+                    action("cancel");
                     clickBtnCancel = false;
                 }
                 if (clickBtnOnPlace) {
@@ -472,9 +471,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 if (clickBtnOnRoad) {
                     clickBtnOnRoad = false;
                 }
-
-                try { TimeUnit.MILLISECONDS.sleep(100); }
-                catch (InterruptedException e) { e.printStackTrace(); }
             }
 
             finish();
@@ -529,6 +525,10 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
             catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        void dalay(int seconds) {
+            try { TimeUnit.MILLISECONDS.sleep(seconds * 1000000); }
+            catch (InterruptedException e) { e.printStackTrace(); }
         }
         void action(String action) {
             publishProgress(action);
@@ -1006,6 +1006,12 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 if (!phone.equals("null")) {
                     info += "Телефон: " + phone + "\n";
                 }
+                String fdial_t = obj.getString("FDIAL_T");
+                if (!fdial_t.equals("null")) {
+                    long ltime = (Long.parseLong(fdial_t) - deltaTime) * 1000;
+                    SimpleDateFormat spf = new SimpleDateFormat("HH:mm:ss");
+                    info += "Дозвон: " + spf.format(new Date(ltime)) + "\n";
+                }
                 tvAssign.setText(info);
 
                 int cancel = o.getInt("cancel");
@@ -1014,7 +1020,9 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 } else {
                     btnCancel.setVisibility(View.GONE);
                 }
-//                String poinnt = o.getString("point");
+
+                dalay(6);
+//                String point = o.getString("point");
 
             } catch (JSONException e) {
                 e.printStackTrace();
