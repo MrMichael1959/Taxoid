@@ -283,22 +283,22 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 break;
 
             case R.id.btnCancel:
-                btnOnPlace.setVisibility(View.VISIBLE);
-                btnOnRoad.setVisibility(View.GONE);
+//                btnOnPlace.setVisibility(View.VISIBLE);
+//                btnOnRoad.setVisibility(View.GONE);
                 llOnLine.setVisibility(View.VISIBLE);
                 llOnPlace.setVisibility(View.GONE);
                 clickBtnCancel = true;
                 break;
 
             case R.id.btnOnPlace:
-                btnOnPlace.setVisibility(View.GONE);
-                btnOnRoad.setVisibility(View.VISIBLE);
+//                btnOnPlace.setVisibility(View.GONE);
+//                btnOnRoad.setVisibility(View.VISIBLE);
                 clickBtnOnPlace = true;
                 break;
 
             case R.id.btnOnRoad:
-                btnOnPlace.setVisibility(View.VISIBLE);
-                btnOnRoad.setVisibility(View.GONE);
+//                btnOnPlace.setVisibility(View.VISIBLE);
+//                btnOnRoad.setVisibility(View.GONE);
                 llOnLine.setVisibility(View.VISIBLE);
                 llOnPlace.setVisibility(View.GONE);
                 clickBtnOnRoad = true;
@@ -401,6 +401,19 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 }
                 if (latitude==0.0 || longitude==0.0){ continue; }
 
+                if (clickBtnCancel) {
+                    clickBtnCancel = false;
+                    action("cancel");
+//                    sleep(1);
+                    continue;
+                }
+                if (clickBtnOnPlace) {
+                    clickBtnOnPlace = false;
+                }
+                if (clickBtnOnRoad) {
+                    clickBtnOnRoad = false;
+                }
+
 //===> get_orders
                 if (response.equals("get_orders")) {
                     getOrders();
@@ -413,12 +426,15 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                     type = "assign";
                     if (status.equals("null")) {
                         revise();
+//                        sleep(1);
                         continue;
                     }
                     if (status.equals("success")) {
                         action("state");
+//                        sleep(6);
                         continue;
                     }
+//                    getOrders();
                     response = "get_orders";
                     continue;
                 }
@@ -427,12 +443,18 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 if (response.equals("revise")) {
                     if (status.equals("null")) {
                         revise();
+                        sleep(1);
                         continue;
                     }
                     if (status.equals("success")) {
-                        if (type.equals("assign")) action("state");
-                        continue;
+                        if (type.equals("assign")) {
+                            action("state");
+//                            sleep(6);
+                            continue;
+                        }
                     }
+//                    sleep(1);
+//                    getOrders();
                     response = "get_orders";
                     continue;
                 }
@@ -441,6 +463,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 if (response.equals("state")) {
                     publishProgress("state");
                     action("state");
+                    sleep(6);
                     continue;
                 }
 
@@ -452,24 +475,12 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                         continue;
                     }
                     revise();
+                    sleep(1);
                     continue;
                 }
 
 //===> point_a
                 if (response.equals("point_a")) {
-                    //if (status.equals("null")) revise();
-                    //continue;
-                }
-
-                if (clickBtnCancel) {
-                    action("cancel");
-                    clickBtnCancel = false;
-                }
-                if (clickBtnOnPlace) {
-                    clickBtnOnPlace = false;
-                }
-                if (clickBtnOnRoad) {
-                    clickBtnOnRoad = false;
                 }
             }
 
@@ -526,8 +537,8 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 e.printStackTrace();
             }
         }
-        void dalay(int seconds) {
-            try { TimeUnit.MILLISECONDS.sleep(seconds * 1000000); }
+        void sleep(int seconds) {
+            try { TimeUnit.MILLISECONDS.sleep(seconds * 1000); }
             catch (InterruptedException e) { e.printStackTrace(); }
         }
         void action(String action) {
@@ -711,13 +722,11 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 String resp = getFromSocket();
                 JSONObject jresp = new JSONObject(resp);
                 response = jresp.getString("response");
-                if (response.equals("get_orders")) {
+                String o = jresp.getJSONArray("data").getJSONObject(0).getString("order");
+                if (o.equals("null")) {
                     updateOrders(resp);
                     publishProgress("show_orders");
-                }
-                if (pilot) {
-                    String o = jresp.getJSONArray("data").getJSONObject(0).getString("order");
-                    if (o.equals("null")) {
+                    if (pilot) {
                         int i;
                         for (int j = 0; j < orders.length(); j++) {
                             JSONObject order = orders.getJSONObject(j);
@@ -756,7 +765,13 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                                 }
                             }
                         }
+//                    }
                     }
+                } else {
+                    pilot = true;
+                    response = "state";
+                    JSONObject ord = new JSONObject(o);
+                    order_id = ord.getInt("FID");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1018,8 +1033,15 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                     btnCancel.setVisibility(View.GONE);
                 }
 
-                dalay(6);
-//                String point = o.getString("point");
+                String point = o.getString("point");
+                if (point.equals("0")) {
+                    btnOnPlace.setVisibility(View.VISIBLE);
+                    btnOnRoad.setVisibility(View.GONE);
+                }
+                if (point.equals("A")) {
+                    btnOnPlace.setVisibility(View.GONE);
+                    btnOnRoad.setVisibility(View.VISIBLE);
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
