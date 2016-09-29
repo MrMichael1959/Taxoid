@@ -354,7 +354,8 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
     class Daemon extends AsyncTask<Void, String, Void> {
 //**************************************************************************************************
         Socket socket = null;
-        protected static final String server_IP = "94.153.161.234";
+//        protected static final String server_IP = "94.153.161.234";
+        protected static final String server_IP = "94.27.63.94";
         private static final int server_Port = 10000;
 
         String count = "";
@@ -375,7 +376,7 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
         protected Void doInBackground(Void... values) {
 
             init();
-            initSocket();
+//            initSocket();
 
             publishProgress("balance");
             if (balance < 0) {
@@ -404,7 +405,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 if (clickBtnCancel) {
                     clickBtnCancel = false;
                     action("cancel");
-//                    sleep(1);
                     continue;
                 }
                 if (clickBtnOnPlace) {
@@ -556,6 +556,13 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 e.printStackTrace();
             }
         }
+        void closeSocket() {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         void sleep(int seconds) {
             try { TimeUnit.MILLISECONDS.sleep(seconds * 1000); }
             catch (InterruptedException e) { e.printStackTrace(); }
@@ -571,8 +578,10 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 obj.put("fmanid", fmanid);
                 obj.put("version", version);
 
+initSocket();
                 sendToSocket(obj.toString());
                 action_response = getFromSocket();
+closeSocket();
 
                 JSONObject jresp = new JSONObject(action_response);
                 response = jresp.getString("response");
@@ -591,8 +600,10 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 obj.put("session", session);
                 obj.put("fmanid", fmanid);
                 obj.put("version", version);
+initSocket();
                 sendToSocket(obj.toString());
                 String resp = getFromSocket();
+closeSocket();
                 JSONObject o = new JSONObject(resp);
                 response = o.getString("response");
                 status = o.getString("status");
@@ -682,10 +693,10 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+initSocket();
             sendToSocket(obj.toString());
             String s = getFromSocket();
-
+closeSocket();
             try {
                 JSONObject auth = new JSONObject(s);
                 fmanid = auth.getJSONArray("data").getJSONObject(0).getInt("fmanid");
@@ -823,17 +834,23 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
                 String resp = toScript( script, server, data.toString());
                 JSONObject obj = new JSONObject(resp);
                 response = obj.getString("response");
-                String o = obj.getJSONArray("data").getJSONObject(0).getString("order");
-                if (!o.equals("null")) {
-                    pilot = true;
-                    response = "state";
-                    JSONObject ord = new JSONObject(o);
-                    order_id = ord.getInt("FID");
+                if (response.equals("assign")) {
+                    order_id = obj.getInt("order_id");
+                    status = obj.getString("status");
+                    return;
                 }
                 if (response.equals("get_orders")) {
-                    if (user.equals("таксюк")) count = " [" + obj.getInt("i") + "]";
-                    updateOrders(resp);
-                    publishProgress("show_orders");
+                    String order = obj.getJSONArray("data").getJSONObject(0).getString("order");
+                    if (order.equals("null")) {
+                        if (user.equals("таксюк")) count = " [" + obj.getInt("i") + "]";
+                        updateOrders(resp);
+                        publishProgress("show_orders");
+                    } else {
+                        pilot = true;
+                        response = "state";
+                        JSONObject ord = new JSONObject(order);
+                        order_id = ord.getInt("FID");
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
