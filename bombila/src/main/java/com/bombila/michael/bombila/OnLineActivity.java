@@ -374,7 +374,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
         }
         @Override
         protected Void doInBackground(Void... values) {
-
             init();
 //            initSocket();
 
