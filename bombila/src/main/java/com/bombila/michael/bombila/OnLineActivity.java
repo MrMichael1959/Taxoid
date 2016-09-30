@@ -841,7 +841,7 @@ closeSocket();
                 if (response.equals("get_orders")) {
                     String order = obj.getJSONArray("data").getJSONObject(0).getString("order");
                     if (order.equals("null")) {
-                        if (user.equals("таксюк")) count = " [" + obj.getInt("i") + "]";
+                        if (user.equals("букрей")) count = " [" + obj.getInt("i") + "]";
                         updateOrders(resp);
                         publishProgress("show_orders");
                     } else {
