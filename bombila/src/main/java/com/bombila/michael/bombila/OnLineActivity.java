@@ -359,7 +359,6 @@ public class OnLineActivity extends AppCompatActivity implements OnClickListener
         private static final int server_Port = 10000;
 
         String count = "";
-        String phone = "";
         String response = "null";
         String status = "null";
         String type = "null";
@@ -1052,9 +1051,9 @@ closeSocket();
                 if (!note.equals("null")) {
                     info += "Примечание: " + note + "\n";
                 }
-                phone = obj.getString("FTEL");
-                if (!phone.equals("null")) {
-                    info += "Телефон: " + phone + "\n";
+                callNumber = obj.getString("FTEL");
+                if (!callNumber.equals("null")) {
+                    info += "Телефон: " + callNumber + "\n";
                 }
                 String fdial_t = obj.getString("FDIAL_T");
                 if (!fdial_t.equals("null")) {
